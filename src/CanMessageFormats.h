@@ -1388,6 +1388,10 @@ union CanMessage
 	CanMessageHeaterModelReport heaterModelReport;
 };
 
+#if RRF_HOST_BUILD
+static_assert(sizeof(CanMessage) <= 128, "CAN message too big for host shim");	// host pointers widen some structs; revisit when host layout stabilises
+#else
 static_assert(sizeof(CanMessage) <= 64, "CAN message too big");		// check none of the messages is too large
+#endif
 
 #endif /* SRC_CAN_CANMESSAGEFORMATS_H_ */
